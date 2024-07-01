@@ -21,6 +21,8 @@ develop-code-formatted:
     - pylint thoth/thoth.py
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
+  tags:
+    - branch-develop
 
 production-code-formatted:
   stage: test
@@ -36,6 +38,8 @@ production-code-formatted:
     - pylint thoth/thoth.py
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+  tags:
+    - branch-main
 
 pages:
   stage: deploy
@@ -48,7 +52,3 @@ pages:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   environment: production
-
-tags:
-  - branch-develop
-  - branch-main
