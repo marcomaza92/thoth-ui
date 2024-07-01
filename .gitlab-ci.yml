@@ -1,12 +1,13 @@
 stages:
   - test
+  - deploy
 
 before_script:
   - apt-get update -qq
   - apt-get install -y -qq python3 python3-pip
   - pip3 install -r requirements.txt --quiet
 
-test-code-formatted:
+develop-code-formatted:
   stage: test
   script:
     # 1. Listar las herramientas instaladas en el runner
@@ -16,10 +17,35 @@ test-code-formatted:
     - pip list
 
     # 2. Test
-    - echo "Testing code in Main:"
+    - echo "Testing code in develop:"
     - pylint thoth/thoth.py
+  rules:
+    if: '$CI_COMMIT_BRANCH == "develop"'
 
-  only:
-    - main
-  tags:
-    - branch-main
+prod-code-formatted:
+  stage: test
+  script:
+    # 1. Listar las herramientas instaladas en el runner
+    - echo "Listing installed tools:"
+    - apt list --installed
+    - echo "Listing Pip libraries:"
+    - pip list
+
+    # 2. Test
+    - echo "Testing code in production:"
+    - pylint thoth/thoth.py
+  rules:
+    if: '$CI_COMMIT_BRANCH == "main"'
+
+pages:
+  stage: deploy
+  script:
+    - pip install -r requirements.txt
+    - reflex run --env prod
+    - mv ./web public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  environment: production
