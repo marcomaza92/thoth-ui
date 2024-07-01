@@ -7,7 +7,7 @@ before_script:
   - apt-get install -y -qq python3 python3-pip
   - pip3 install -r requirements.txt --quiet
 
-develop-code-formatted:
+test-code-formatted:
   stage: test
   script:
     # 1. Listar las herramientas instaladas en el runner
@@ -22,7 +22,7 @@ develop-code-formatted:
   rules:
     if: '$CI_COMMIT_BRANCH == "develop"'
 
-prod-code-formatted:
+test-code-formatted:
   stage: test
   script:
     # 1. Listar las herramientas instaladas en el runner
