@@ -1,6 +1,5 @@
 stages:
   - test
-  - deploy
 
 before_script:
   - apt-get update -qq
@@ -21,15 +20,3 @@ test-code-formatted:
     - pylint thoth/thoth.py
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
-
-pages:
-  stage: deploy
-  script:
-    - reflex run --env prod
-    - mv ./web public
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  environment: production
