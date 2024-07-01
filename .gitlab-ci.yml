@@ -18,5 +18,3 @@ test-code-formatted:
     # 2. Test
     - echo "Testing code in develop:"
     - pylint thoth/thoth.py
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
