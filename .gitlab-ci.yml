@@ -7,7 +7,7 @@ before_script:
   - apt-get install -y -qq python3 python3-pip
   - pip3 install -r requirements.txt --quiet
 
-test-code-formatted:
+develop-code-formatted:
   stage: test
   script:
     # 1. Listar las herramientas instaladas en el runner
@@ -20,9 +20,9 @@ test-code-formatted:
     - echo "Testing code in develop:"
     - pylint thoth/thoth.py
   rules:
-    if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
 
-test-code-formatted:
+production-code-formatted:
   stage: test
   script:
     # 1. Listar las herramientas instaladas en el runner
@@ -35,7 +35,7 @@ test-code-formatted:
     - echo "Testing code in production:"
     - pylint thoth/thoth.py
   rules:
-    if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
 
 pages:
   stage: deploy
