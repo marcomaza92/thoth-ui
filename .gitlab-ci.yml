@@ -48,3 +48,7 @@ pages:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   environment: production
+
+tags:
+  - branch-develop
+  - branch-main
