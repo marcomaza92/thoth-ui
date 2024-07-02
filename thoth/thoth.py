@@ -31,9 +31,27 @@ def index() -> rx.Component:
         justify="center",
         min_height="85vh",
       ),
+    ),
+    rx.container(
+      rx.color_mode.button(position="top-right"),
+      rx.vstack(
+        rx.heading("Commit", size="9"),
+        rx.text(
+          "Conventional Commit",
+          size="5",
+        ),
+        rx.list.unordered(
+          rx.list.item("Example 1"),
+          rx.list.item("Example 2"),
+          rx.list.item("Example 3"),
+        )
+        spacing="5",
+        justify="center",
+        min_height="85vh",
+      ),
     )
   )
-
+  
 
 app = rx.App()
 app.add_page(index)
