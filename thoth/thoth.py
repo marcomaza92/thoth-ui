@@ -41,10 +41,11 @@ def index() -> rx.Component:
           size="5",
         ),
         rx.list.unordered(
-          rx.list.item("Example 1"),
-          rx.list.item("Example 2"),
-          rx.list.item("Example 3"),
-        )
+          rx.list.item("scope: message"),
+          rx.list.item("feat: add new container for the Branching information"),
+          rx.list.item("fix: update app setup in README.md"),
+          rx.list.item("chore: remove unused packages")
+        ),
         spacing="5",
         justify="center",
         min_height="85vh",
