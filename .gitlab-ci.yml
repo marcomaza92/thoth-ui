@@ -7,35 +7,38 @@ before_script:
   - apt-get install -y -qq python3 python3-pip
   - pip3 install -r requirements.txt --quiet
 
+merge-request-code-formatted:
+  stage: test
+  script:
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  tags:
+    - macos-shared
+
 develop-code-formatted:
   stage: test
   script:
-    # 1. Listar las herramientas instaladas en el runner
     - echo "Listing installed tools:"
     - apt list --installed
     - echo "Listing Pip libraries:"
     - pip list
 
-    # 2. Test
-    - echo "Testing code in develop:"
-    - pylint thoth/thoth.py
+    - echo "Formatting code in develop:"
+    - black thoth
+    - pylint thoth
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
+
   tags:
     - macos-shared
 
 production-code-formatted:
   stage: test
   script:
-    # 1. Listar las herramientas instaladas en el runner
-    - echo "Listing installed tools:"
-    - apt list --installed
-    - echo "Listing Pip libraries:"
-    - pip list
-
-    # 2. Test
-    - echo "Testing code in production:"
-    - pylint thoth/thoth.py
+    - black thoth
+    - pylint thoth
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   tags:
@@ -50,5 +53,5 @@ pages:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  environment: production
+    - if: $CI_COMMIT_BRANCH == 'develop'
+  environment: develop
