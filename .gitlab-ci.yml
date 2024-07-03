@@ -22,7 +22,6 @@ develop-code-formatted:
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   tags:
-    - branch-develop
     - macos-shared
 
 production-code-formatted:
@@ -40,7 +39,6 @@ production-code-formatted:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   tags:
-    - branch-main
     - macos-shared
 
 pages:
