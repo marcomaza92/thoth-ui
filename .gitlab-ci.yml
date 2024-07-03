@@ -47,7 +47,6 @@ production-code-formatted:
 pages:
   stage: deploy
   script:
-    -
     - reflex export --frontend-only --no-zip
     - mv ./web/_static public
   artifacts:
