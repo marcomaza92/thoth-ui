@@ -54,4 +54,6 @@ pages:
       - public
   rules:
     - if: $CI_COMMIT_BRANCH == 'develop'
+  tags:
+    - macos-shared
   environment: develop
