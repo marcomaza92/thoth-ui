@@ -47,9 +47,9 @@ production-code-formatted:
 pages:
   stage: deploy
   script:
-    - reflex script keep-chakra
-    - reflex run --env prod
-    - mv ./web public
+    -
+    - reflex export --frontend-only --no-zip
+    - mv ./web/_static public
   artifacts:
     paths:
       - public
