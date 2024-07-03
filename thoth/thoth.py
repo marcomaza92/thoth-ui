@@ -41,7 +41,7 @@ def index() -> rx.Component:
           size="5",
         ),
         rx.list.unordered(
-          rx.list.item("Example 1"),
+          rx.list.item("scope: message"),
           rx.list.item("Example 2"),
           rx.list.item("Example 3"),
         )
