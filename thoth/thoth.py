@@ -44,7 +44,7 @@ def index() -> rx.Component:
           rx.list.item("scope: message"),
           rx.list.item("Example 2"),
           rx.list.item("Example 3"),
-        )
+        ),
         spacing="5",
         justify="center",
         min_height="85vh",
