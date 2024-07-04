@@ -1,0 +1,59 @@
+stages:
+  - test
+  - deploy
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq python3 python3-pip
+  - pip3 install -r requirements.txt --quiet
+
+merge-request-code-formatted:
+  stage: test
+  script:
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  tags:
+    - macos-shared
+
+develop-code-formatted:
+  stage: test
+  script:
+    - echo "Listing installed tools:"
+    - apt list --installed
+    - echo "Listing Pip libraries:"
+    - pip list
+
+    - echo "Formatting code in develop:"
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+  tags:
+    - macos-shared
+
+production-code-formatted:
+  stage: test
+  script:
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  tags:
+    - macos-shared
+
+pages:
+  stage: deploy
+  script:
+    - reflex export --frontend-only --no-zip
+    - mv ./web/_static public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop'
+  tags:
+    - macos-shared
+  environment: develop

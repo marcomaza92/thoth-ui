@@ -6,8 +6,24 @@
 python3 -m venv .venv
 ```
 
+or
+
+```python
+python -m venv .venv
+```
+
+### Activate virtual environment
+
+#### On Unix
+
 ```python
 source .venv/bin/activate
+```
+
+#### On Windows
+
+```python
+source .venv/Scripts/activate
 ```
 
 ### Install requirements
