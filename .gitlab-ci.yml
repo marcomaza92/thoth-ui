@@ -47,8 +47,7 @@ pages:
   stage: deploy
   script:
     - reflex export --frontend-only --no-zip
-    - ls -lash ./web
-    - mv ./web/_static public
+    - mv .web/_static public
   artifacts:
     paths:
       - public
