@@ -45,23 +45,33 @@ def index() -> rx.Component:
             justify="center",
             min_height="50vh",
         ),
-            rx.color_mode.button(position="top-right"),
-            rx.vstack(
-                rx.heading("Commit", size="9"),
-                rx.text(
-                    "Conventional Commit",
-                    size="5",
-                ),
-                rx.list.unordered(
-                    rx.list.item("scope: message"),
-                    rx.list.item("Example 2"),
-                    rx.list.item("Example 3"),
-                ),
-                spacing="5",
-                justify="center",
-                min_height="85vh",
+        rx.container(
+          rx.color_mode.button(position="top-right"),
+          rx.vstack(
+            rx.heading("Commit", size="9"),
+            rx.text(
+              "Conventional Commit",
+              size="5",
             ),
-        )
+            rx.list.unordered(
+              rx.list.item("scope: message"),
+              rx.list.item("feat: add new container for the Branching information"),
+              rx.list.item("fix: update app setup in README.md"),
+              rx.list.item("chore: remove unused packages")
+            ),
+            spacing="5",
+            justify="center",
+            min_height="85vh",
+          ),
+          
+        ),
+        spacing="5",
+        justify="center",
+        min_height="85vh"
+    )
+    
+  
+  
 
 
 
