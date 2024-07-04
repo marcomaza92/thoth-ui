@@ -29,8 +29,7 @@ develop-code-formatted:
     - black thoth
     - pylint thoth
   rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-
+    - if: '$CI_COMMIT_BRANCH == "qa"' # Change to develop when deploy is fixed
   tags:
     - macos-shared
 
@@ -48,6 +47,7 @@ pages:
   stage: deploy
   script:
     - reflex export --frontend-only --no-zip
+    - ls -lash
     - mv ./web/_static public
   artifacts:
     paths:
