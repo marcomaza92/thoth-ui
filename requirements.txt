@@ -1,1 +1,4 @@
 reflex==0.5.5
+pylint==3.2.5
+black==24.4.2
+unzip==1.0.0

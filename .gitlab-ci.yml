@@ -1,25 +1,59 @@
 stages:
   - test
+  - deploy
 
 before_script:
-  - apt-get update
-  - apt-get install -y python3 python3-pip
-  - pip3 install pylint==3.2.5
+  - apt-get update -qq
+  - apt-get install -y -qq python3 python3-pip
+  - pip3 install -r requirements.txt --quiet
 
-test-code-formatted:
+merge-request-code-formatted:
   stage: test
   script:
-    # 1. Listar las herramientas instaladas en el runner
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  tags:
+    - macos-shared
+
+develop-code-formatted:
+  stage: test
+  script:
     - echo "Listing installed tools:"
     - apt list --installed
     - echo "Listing Pip libraries:"
     - pip list
 
-    # 2. Test
-    - echo "Testing code:"
-    - pylint thoth/thoth.py
+    - echo "Formatting code in develop:"
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
 
-  only:
-    - develop
   tags:
-    - branch-develop
+    - macos-shared
+
+production-code-formatted:
+  stage: test
+  script:
+    - black thoth
+    - pylint thoth
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  tags:
+    - macos-shared
+
+pages:
+  stage: deploy
+  script:
+    - reflex export --frontend-only --no-zip
+    - mv ./web/_static public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop'
+  tags:
+    - macos-shared
+  environment: develop
