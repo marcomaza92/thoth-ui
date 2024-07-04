@@ -10,6 +10,7 @@ before_script:
 
 .build_script:
   script:
+    - apt-get install -y unzip
     - reflex export --frontend-only --no-zip
 
 .formatting_script:
