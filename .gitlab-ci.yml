@@ -10,7 +10,7 @@ before_script:
 
 build-frontend-app:
   stage: build
-  extends:
+  script:
     - reflex export --frontend-only --no-zip
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_BRANCH == 'main'
@@ -19,7 +19,7 @@ build-frontend-app:
 
 format-code:
   stage: test
-  extends:
+  script:
     - black thoth
     - pylint thoth
   rules:
@@ -29,7 +29,7 @@ format-code:
 
 pages:
   stage: deploy
-  extends:
+  script:
     - reflex export --frontend-only --no-zip
     - mv .web/_static public
   artifacts:
