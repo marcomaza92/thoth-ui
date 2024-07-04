@@ -1,58 +1,52 @@
 stages:
+  - build
   - test
   - deploy
 
 before_script:
   - apt-get update -qq
-  - apt-get install -y -qq python3 python3-pip curl unzip
+  - apt-get install -y -qq python3 python3-pip
   - pip3 install -r requirements.txt --quiet
 
-merge-request-code-formatted:
-  stage: test
+.build_script:
+  script:
+    - reflex export --frontend-only --no-zip
+
+.formatting_script:
   script:
     - black thoth
     - pylint thoth
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-  tags:
-    - macos-shared
 
-develop-code-formatted:
-  stage: test
+.deployment_script:
   script:
-    - echo "Listing installed tools:"
-    - apt list --installed
-    - echo "Listing Pip libraries:"
-    - pip list
+    - apt-get install -y unzip
+    - reflex export --frontend-only --no-zip
+    - mv .web/_static public
 
-    - echo "Formatting code in develop:"
-    - black thoth
-    - pylint thoth
+build-frontend-app:
+  stage: build
+  extends: .build_script
   rules:
-    - if: '$CI_COMMIT_BRANCH == "qa"' # Change to develop when deploy is fixed
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_BRANCH == 'main'
   tags:
-    - macos-shared
+    - build-shared
 
-production-code-formatted:
+format-code:
   stage: test
-  script:
-    - black thoth
-    - pylint thoth
+  extends: .formatting_script
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_BRANCH == 'main'
   tags:
-    - macos-shared
+    - format-shared
 
 pages:
   stage: deploy
-  script:
-    - reflex export --frontend-only --no-zip
-    - mv .web/_static public
+  extends: .deployment_script
   artifacts:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_BRANCH == 'develop'
+    - if: $CI_COMMIT_BRANCH == 'develop' || $CI_COMMIT_BRANCH == 'main'
   tags:
-    - macos-shared
-  environment: develop
+    - deploy-shared
+  environment: deployment
