@@ -10,8 +10,8 @@ from thoth.labels.labels import *  # pylint: disable=wildcard-import
 def index() -> rx.Component:
     """Main Page"""
 
-    return rx.container(
-        rx.section(
+    return rx.el.main(
+        rx.el.header(
             rx.flex(
                 rx.box(
                     rx.heading(
@@ -44,6 +44,11 @@ def index() -> rx.Component:
                     as_="p",
                     style=[text_style],
                 ),
+                rx.text(
+                    introduction["usage_i"],
+                    as_="p",
+                    style=[text_style],
+                ),
                 direction="column",
                 justify="between",
                 spacing="5",
@@ -54,6 +59,7 @@ def index() -> rx.Component:
             rx.flex(
                 rx.text(branching["content_i"], style=[text_style]),
                 rx.text(branching["content_ii"], style=[text_style]),
+                rx.text(branching["content_iii"], style=[text_style]),
                 rx.list.unordered(rx.foreach(branching["list_i"], rx.list.item)),
                 direction="column",
                 justify="between",
@@ -64,7 +70,16 @@ def index() -> rx.Component:
             rx.heading(commits["title"], style=[primary_color, h2_style]),
             rx.flex(
                 rx.text(commits["content_i"], style=[text_style]),
-                rx.list.unordered(rx.foreach(commits["list_i"], rx.list.item)),
+                rx.text(commits["content_ii"], style=[text_style]),
+                rx.text(commits["content_iii"], style=[text_style]),
+                rx.list.unordered(
+                    rx.foreach(
+                        commits["list_i"],
+                        lambda item: rx.list.item(
+                            rx.code(item)
+                        )
+                    )
+                ),
                 direction="column",
                 justify="between",
                 spacing="5",
@@ -87,8 +102,8 @@ def index() -> rx.Component:
                 rx.text(code_review["content_i"], style=[text_style]),
                 rx.list.unordered(rx.foreach(code_review["list_i"], rx.list.item)),
                 rx.link(
-                    "Ejemplo de Merge Request",
-                    href=code_review["link_i"],
+                    code_review["link_i"]["text"],
+                    href=code_review["link_i"]["url"],
                     target="_blank",
                 ),
                 direction="column",
@@ -111,7 +126,22 @@ def index() -> rx.Component:
                 spacing="5",
             ),
         ),
+        rx.el.footer(
+            rx.heading(next_steps["title"], style=[primary_color, h2_style]),
+            rx.flex(
+                rx.text(next_steps["content_i"], style=[text_style]),
+                rx.link(
+                    next_steps["link_i"]["text"],
+                    href=next_steps["link_i"]["url"],
+                    target="_blank",
+                ),
+                direction="column",
+                justify="between",
+                spacing="5",
+            ),
+        ),
         spacing="5",
+        style=[main_style]
     )
 
 
