@@ -1,7 +1,7 @@
 """Styles: This is the module where all the custom 'CSS-like' styles live"""
 
 main_style = {
-  "padding": "4rem",
+    "padding": "4rem",
 }
 
 primary_color = {

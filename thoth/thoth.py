@@ -74,10 +74,7 @@ def index() -> rx.Component:
                 rx.text(commits["content_iii"], style=[text_style]),
                 rx.list.unordered(
                     rx.foreach(
-                        commits["list_i"],
-                        lambda item: rx.list.item(
-                            rx.code(item)
-                        )
+                        commits["list_i"], lambda item: rx.list.item(rx.code(item))
                     )
                 ),
                 direction="column",
@@ -141,7 +138,7 @@ def index() -> rx.Component:
             ),
         ),
         spacing="5",
-        style=[main_style]
+        style=[main_style],
     )
 
 
